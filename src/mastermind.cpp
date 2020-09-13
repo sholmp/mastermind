@@ -5,35 +5,34 @@
 
 using namespace std;
 
-int add(int a, int b)
-{
-	return a +b;
-}
+
 
 
 pair<int, int> compareInputToCode(string input, string code)
 {
     int blacks = 0, whites = 0;
+    int n = code.size();
+    int i;
 
-    for(int i = 0; i < input.size(); i++)
+    map<char, int> color_counts;
+    vector<bool> marked(n, false);
+    for(i = 0; i < n; i++)
+        color_counts[code[i]] += 1;
+
+    for(i = 0; i < n; i++)
     {
         if(input[i] == code[i])
         {
             blacks++;
-            input.erase(input.begin() + i);
-            code.erase(code.begin() + i);
-            i--;
+            marked[i] = true;
+            color_counts[code[i]] -= 1;
         }
     }
 
-    map<char, int> color_counts;
-    for(int i = 0; i < code.size(); i++)
-        color_counts[code[i]] += 1;
-
-    for(int i = 0; i < input.size(); i++)
+    for(i = 0; i < n; i++)
     {
         char ch = input[i];
-        if(color_counts[ch])
+        if(color_counts[ch] > 0 && !marked[i])
         {
             whites++;
             color_counts[ch] -= 1;
@@ -43,3 +42,14 @@ pair<int, int> compareInputToCode(string input, string code)
 
     return {blacks, whites};
 }
+
+//    for(int i = 0; i < input.size(); i++)
+//    {
+//        if(input[i] == code[i])
+//        {
+//            blacks++;
+//            input.erase(input.begin() + i);
+//            code.erase(code.begin() + i);
+//            i--;
+//        }
+//    }
