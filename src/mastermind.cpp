@@ -5,10 +5,7 @@
 
 using namespace std;
 
-
-
-
-pair<int, int> compareInputToCode(string input, string code)
+BWResult compareInputToCode(string input, string code)
 {
     int blacks = 0, whites = 0;
     int n = code.size();
@@ -53,3 +50,25 @@ pair<int, int> compareInputToCode(string input, string code)
 //            i--;
 //        }
 //    }
+
+bool codeIsValid(string code, std::set<char> valid_colors, int code_length)
+{
+    if(code.length() != code_length)
+        return false;
+
+    for(int i = 0; i < code_length; i++)
+    {
+        if(valid_colors.count(code[i]) == 0)
+            return false;
+    }
+    return true;
+}
+
+
+//bool codeIsValid(std::string code) {
+//  if (code.length() != 4)
+//    return false;
+//  static const std::set<char> valid_colors = { 'R', 'B', 'G', 'Y' };
+//  return std::all_of(code.begin(), code.end(),
+//                     [](char c) { return valid_colors.count(c) != 0; });
+//}
