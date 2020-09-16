@@ -1,153 +1,57 @@
 #include <iostream>
-#include "mastermind.hpp"
-#include <string.h>
-#include <set>
+#include "inputparser.hpp"
+#include "mastermindgame.hpp"
 
-using namespace  std;
+using namespace std;
 
-uint attempts = 3;
-uint code_length = 4;
-set<char> valid_colors = {'r', 'g', 'b', 'y', 'p', 'm'};
-int player1score = 0;
+string help_message = "The default code length is 4, with 6 default colors:'r,g,b,y,p,m'\n\n"
+                      "The default parameters can be configured in the following way: \n"
+                      "--colors: <string> with length [2-8]. E.g. '--colors rgb'\n"
+                      "--codelength: <int> with a value in the range [2-8]. E.g. '--length 7'\n";
 
-enum class State
+int main(int argc, char** argv)
 {
-    INIT, INPUT_CODE, INPUT_GUESS, GAME_OVER
-};
+    string colors = "rgbypm";
+    int code_length = 4;
 
-
-int main()
-{
-    State state = State::INIT;
-    string code;
-    string guess;
-    while(true)
+    InputParser parser(argc, argv);
+    if(parser.cmdOptionExists("-h"))
     {
-        switch(state)
+        cout << help_message;
+        exit(0);
+    }
+
+    if(parser.cmdOptionExists("--colors"))
+    {
+        colors = parser.getCmdOption("--colors");
+        if(colors.empty() || colors.length() > MastermindGame::max_colors || colors.length() < 2)
         {
-        case State::INIT:
-            cout << "Please enter the secret code:" << endl;
-            state = State::INPUT_CODE;
-            break;
-        case State::INPUT_CODE:
-            cout << ">";
-            cin >> code;
-
-            if(codeIsValid(code, valid_colors, code_length))
-            {
-                state = State::INPUT_GUESS;
-                cout << "Please enter your guess:\n";
-            }
-            else
-                cout << "Invalid code, please try again\n";
-            break;
-
-        case State::INPUT_GUESS:
-            if(attempts == 0)
-            {
-                state = State::GAME_OVER;
-                break;
-            }
-            cout << ">";
-            cin >> guess;
-
-            if(codeIsValid(guess, valid_colors, code_length))
-            {
-                BWResult result = compareInputToCode(guess, code);
-
-                if(result == BWResult{4,0})
-                {
-                    cout << "Congratulations you guessed the secret code\n";
-                    state = State::GAME_OVER;
-                    break;
-                }
-                cout << "Blacks: " << result.blacks << endl;
-                cout << "Whites: " << result.whites << endl;
-                attempts--;
-            }
-            else
-                cout << "Invalid guess, please try again\n";
-            break;
-
-        case State::GAME_OVER:
-            cout << "Game over!!!" << endl;
-            break;
-
-        default:
-            cout << "In default state" << endl;
-            break;
+            cout << "Invalid --colors argument";
+            exit(0);
         }
-
-        State s = State::INPUT_CODE;
-
-
     }
-    //    cout << s;
+    if(parser.cmdOptionExists("--codelength"))
+    {
+        try //'stoi' throws invalid_argument if specified option is not numeric
+        {
+            code_length = stoi(parser.getCmdOption("--codelength"));
+            if(code_length > MastermindGame::max_code_length || code_length < 2)
+                throw(invalid_argument(""));
+        }
+        catch(invalid_argument e)
+        {
+            cout << "Invalid --codelength argument\n";
+            exit(0);
+        }
+    }
+
+    MastermindGame game(colors, code_length);
+
+    game.run();
 
     return 0;
 }
 
 
-/*
-bool isValidCode(string code)
-{
-
-}
-
-string getSecretCode(set<char> available_colors)
-{
-    string code;
-    cout << "Please enter the secret code: ";
-    cin >> code;
-
-    if(code.length() < code_length)
-        throw("Inputted code is too short");
-    else if(code.length() > code_length)
-        throw("Inputted code is too long");
-
-    for(int i = 0; i < code_length; i++)
-    {
-        if(available_colors.count(code[i]) == 0)
-            throw("Inputted code contains non valid colors");
-    }
-
-    return code;
-}
 
 
-int main(int argc, char* argv[])
-{
-
-    string code;
-    try
-    {
-        code = getSecretCode({'r','g','b'});
-    }
-    catch(const char* error)
-    {
-        cout << error << endl;
-    }
-    cout << code;
-
-    int attempts = 5;
-    string guess;
-    cout << "Please enter your guess: " << endl;
-    while(attempts)
-    {
-        cout << ">";
-        cin >> guess;
-        cout << endl;
-
-        pair<int, int> result = compareInputToCode(code, guess);
-        int num_blacks = result.first;
-        int num_whites = result.second;
-
-        cout << "Blacks: " << num_blacks << endl;
-        cout << "Whites: " << num_whites << endl;
-
-        attempts--;
-    }
-
-    return 0;
-}
-*/

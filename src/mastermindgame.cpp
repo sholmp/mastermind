@@ -1,26 +1,18 @@
 #include "mastermindgame.hpp"
 
-#include <algorithm>
+//#include <algorithm>
 #include <vector>
 #include <map>
 #include <iostream>
-//#include <cstdio> //to_upper
 
 using namespace std;
 
-MastermindGame::MastermindGame()
+MastermindGame::MastermindGame(string valid_colors, int code_length):
+    valid_colors_(valid_colors),
+    code_length_(code_length),
+    mastermind_logic_(MastermindLogic(valid_colors, code_length))
 {
 
-}
-
-MastermindGame::MastermindGame(string valid_colors, int code_length): code_length_(code_length)
-{
-    valid_colors_.clear();
-    for(const char& c : valid_colors)
-    {
-        valid_colors_.insert(c);
-        valid_colors_.insert(toupper(c));
-    }
 }
 
 void MastermindGame::run()
@@ -37,14 +29,16 @@ void MastermindGame::fsm()
     switch(state_)
     {
     case State::INIT:
-        cout << "Please enter the secret code:" << endl;
+
+        cout << "Please enter the secret code:\n";
         state_ = State::INPUT_CODE;
         break;
+
     case State::INPUT_CODE:
         cout << ">";
         cin >> code_;
 
-        if(inputIsValid(code_))
+        if( mastermind_logic_.inputIsValid(code_) )
         {
             state_ = State::INPUT_GUESS;
             cout << "Please enter your guess:\n";
@@ -62,9 +56,9 @@ void MastermindGame::fsm()
         cout << ">";
         cin >> input_guess;
 
-        if(inputIsValid(input_guess))
+        if( mastermind_logic_.inputIsValid(input_guess) )
         {
-            BWResult result = compareInputToCode(input_guess, code_);
+            BWResult result = mastermind_logic_.evaluateGuess(input_guess, code_);
 
             if(result.blacks == code_length_)
             {
@@ -85,60 +79,5 @@ void MastermindGame::fsm()
         break;
 
     }
-}
-
-
-BWResult MastermindGame::compareInputToCode(string input, string code)
-{
-    int blacks = 0, whites = 0;
-    int n = code.size();
-    int i;
-
-    map<char, int> color_counts;
-    vector<bool> marked(n, false);
-    for(i = 0; i < n; i++)
-        color_counts[code[i]] += 1;
-
-    for(i = 0; i < n; i++)
-    {
-        if(input[i] == code[i])
-        {
-            blacks++;
-            marked[i] = true;
-            color_counts[code[i]] -= 1;
-        }
-    }
-
-    for(i = 0; i < n; i++)
-    {
-        char ch = input[i];
-        if(color_counts[ch] > 0 && !marked[i])
-        {
-            whites++;
-            color_counts[ch] -= 1;
-        }
-    }
-
-
-    return {blacks, whites};
-}
-
-
-bool MastermindGame::inputIsValid(string input)
-{
-    if(input.length() != code_length_)
-        return false;
-
-//    auto lambda = [this](const char& c){
-//        return this->valid_colors_.count(c) != 0;};
-
-//    return all_of(input.begin(), input.end(), lambda); //Returns true if lambda evaluates to true for every element
-
-    for(const char& ch : input)
-        if(valid_colors_.count(ch) == 0)
-            return false;
-
-    return true;
-
 }
 

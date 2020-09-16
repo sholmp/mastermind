@@ -3,20 +3,22 @@
 
 #include <unordered_set>
 #include <string>
+#include "mastermindlogic.hpp"
 
-
-struct BWResult;
+//struct BWResult;
 
 class MastermindGame
 {
 public:
-    MastermindGame();
     MastermindGame(std::string valid_colors, int code_length);
     void run();
 
+    static const int max_code_length = 8;
+    static const int max_colors = 8;
+
 private:
-    BWResult compareInputToCode(std::string input, std::string code);
-    bool inputIsValid(std::string input);
+    BWResult evaluateGuess(std::string input, std::string code) const;
+    bool inputIsValid(std::string input) const;
     void fsm();
 
 private:
@@ -25,27 +27,13 @@ private:
         INIT, INPUT_CODE, INPUT_GUESS, GAME_OVER
     };
     State state_ = State::INIT;
-    std::unordered_set<char> valid_colors_ = {'r','g','b','y','p','m','R','G','B','Y','P','M'};
-    int code_length_ = 4;
     int attempts_ = 3;
+    int code_length_;
     std::string code_;
+    std::string valid_colors_;
+    MastermindLogic mastermind_logic_;
 
 };
 
-
-struct BWResult
-{
-    int blacks;
-    int whites;
-
-    //For google unit testing:
-    BWResult(int b, int w) : blacks(b), whites(w){} //Made a constructor, because brace initialization not working inside gtest's EXPECT_EQ()
-    bool operator==(const BWResult& rhs) const {
-        return blacks == rhs.blacks && whites == rhs.whites;
-    }
-    bool operator !=(const BWResult& rhs) const {
-        return !(*this == rhs);
-    }
-};
 
 #endif // MASTERMINDGAME_H
