@@ -1,38 +1,42 @@
 #include <gtest/gtest.h>
+#include <string>
 
+//#include <mastermind.hpp>
 #include <mastermindgame.hpp>
 #include <mastermindlogic.hpp>
 
 
-
-TEST(InputTest, inputIsValidTest)
-{
-    MastermindLogic mml("rgbypm", 4);
-
-    EXPECT_TRUE(mml.inputIsValid("rgbb"));
-    EXPECT_TRUE(mml.inputIsValid("rrrr"));
-    EXPECT_TRUE(mml.inputIsValid("ypmr"));
-
-    EXPECT_FALSE(mml.inputIsValid("qqqq"));
-    EXPECT_FALSE(mml.inputIsValid("12345"));
-    EXPECT_FALSE(mml.inputIsValid("rrrrr"));
-    EXPECT_FALSE(mml.inputIsValid("rrr"));
-    EXPECT_FALSE(mml.inputIsValid(""));
-}
-
 TEST(LogicTest, evaluateGuessTest)
 {
-    MastermindLogic mml("", 0);
+    EXPECT_EQ(BWresult(4,0), evaluateGuess("RRRR", "RRRR"));
+    EXPECT_EQ(BWresult(0,0), evaluateGuess("ABCD", "EFGH"));
+    EXPECT_EQ(BWresult(0,4), evaluateGuess("RBRB", "BRBR"));
 
-    EXPECT_EQ(BWResult(4,0), mml.evaluateGuess("RRRR", "RRRR"));
-    EXPECT_EQ(BWResult(0,0), mml.evaluateGuess("ABCD", "EFGH"));
-    EXPECT_EQ(BWResult(0,4), mml.evaluateGuess("RBRB", "BRBR"));
-
-
-    EXPECT_EQ(BWResult(1,0), mml.evaluateGuess("q", "qq"));
-    EXPECT_EQ(BWResult(1,0), mml.evaluateGuess("q", "qq"));
-
+    EXPECT_EQ(BWresult(1,0), evaluateGuess("q", "qq"));
+    EXPECT_EQ(BWresult(1,0), evaluateGuess("q", "qq"));
 }
+
+TEST(LogicTest, guessIsValidTest)
+{
+    std::string valid_colors = "rgbypm";
+
+    EXPECT_TRUE(guessIsValid("rgbr", valid_colors, 4));
+    EXPECT_TRUE(guessIsValid("rgbb", valid_colors, 4));
+    EXPECT_TRUE(guessIsValid("rrrr", valid_colors, 4));
+    EXPECT_TRUE(guessIsValid("ypmr", valid_colors, 4));
+
+    //Using non valid colors:
+    EXPECT_FALSE(guessIsValid("qqqq", valid_colors, 4));
+    EXPECT_FALSE(guessIsValid("1234", valid_colors, 4));
+
+    //Using inputs with wrong lengths:
+    EXPECT_FALSE(guessIsValid("", valid_colors, 4));
+    EXPECT_FALSE(guessIsValid("r", valid_colors, 4));
+    EXPECT_FALSE(guessIsValid("rgbbbbb", valid_colors, 4));
+    EXPECT_FALSE(guessIsValid("rrrr", valid_colors, 7));
+}
+
+
 
 
 
