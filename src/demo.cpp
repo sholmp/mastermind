@@ -4,7 +4,7 @@
 
 using namespace std;
 
-string help_message = "The default code length is 4, with 6 default colors:'r,g,b,y,p,m'\n\n"
+string help_message = "The default code length is 4, with 6 default colors:'r, g, b, y, p, m'\n\n"
                       "The default parameters can be configured in the following way: \n"
                       "--colors: <string> with length [2-8]. E.g. '--colors rgb'\n"
                       "--codelength: <int> with a value in the range [2-8]. E.g. '--length 7'\n";

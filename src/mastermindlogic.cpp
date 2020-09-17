@@ -1,45 +1,37 @@
 #include "mastermindlogic.hpp"
-#include <map>
 #include <vector>
+#include <map>
+#include <iostream>
+#include <unordered_set>
 
 using namespace std;
 
-MastermindLogic::MastermindLogic(std::string valid_colors, int code_length):
-    code_length_(code_length)
-{
-    for(const char& ch : valid_colors)
-    {
-        valid_colors_.insert(ch);
-        valid_colors_.insert(toupper(ch));
-    }
-}
-
-
-BWResult MastermindLogic::evaluateGuess(string guess, string code) const
+BWresult evaluateGuess(string input, string code)
 {
     int blacks = 0, whites = 0;
     int n = code.size();
     int i;
 
     map<char, int> color_counts;
-    vector<bool> marked(n, false);
-    for(i = 0; i < n; i++)
-        color_counts[code[i]] += 1;
+    vector<bool> already_used(n, false);
+
+    for(const char& ch: code)
+        color_counts[ch] += 1;
 
     for(i = 0; i < n; i++)
     {
-        if(guess[i] == code[i])
+        if(input[i] == code[i])
         {
             blacks++;
-            marked[i] = true;
+            already_used[i] = true;
             color_counts[code[i]] -= 1;
         }
     }
 
     for(i = 0; i < n; i++)
     {
-        char ch = guess[i];
-        if(color_counts[ch] > 0 && !marked[i])
+        char ch = input[i];
+        if(color_counts[ch] > 0 && !already_used[i])
         {
             whites++;
             color_counts[ch] -= 1;
@@ -49,14 +41,25 @@ BWResult MastermindLogic::evaluateGuess(string guess, string code) const
     return {blacks, whites};
 }
 
-bool MastermindLogic::inputIsValid(string guess) const
+
+bool codeIsValid(string code, string valid_colors, int code_length)
 {
-    if(guess.length() != code_length_)
+    if(code.length() != code_length)
         return false;
 
-    for(const char& ch : guess)
-        if(valid_colors_.count(ch) == 0)
+    unordered_set<char> valid_colors_set;
+    for(const char& ch : valid_colors)
+        valid_colors_set.insert(ch);
+
+    for(const char& ch : code)
+        if(valid_colors_set.count(ch) == 0)
             return false;
 
     return true;
+}
+
+
+bool guessIsValid(string guess, string valid_colors, int code_length)
+{
+    return codeIsValid(guess, valid_colors, code_length);
 }

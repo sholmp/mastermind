@@ -1,6 +1,5 @@
 #include "mastermindgame.hpp"
 
-//#include <algorithm>
 #include <vector>
 #include <map>
 #include <iostream>
@@ -9,8 +8,7 @@ using namespace std;
 
 MastermindGame::MastermindGame(string valid_colors, int code_length):
     valid_colors_(valid_colors),
-    code_length_(code_length),
-    mastermind_logic_(MastermindLogic(valid_colors, code_length))
+    code_length_(code_length)
 {
 
 }
@@ -25,11 +23,10 @@ void MastermindGame::run()
 
 void MastermindGame::fsm()
 {
-    string input_guess;
+    string guess;
     switch(state_)
     {
     case State::INIT:
-
         cout << "Please enter the secret code:\n";
         state_ = State::INPUT_CODE;
         break;
@@ -38,7 +35,7 @@ void MastermindGame::fsm()
         cout << ">";
         cin >> code_;
 
-        if( mastermind_logic_.inputIsValid(code_) )
+        if(codeIsValid(code_, valid_colors_, code_length_))
         {
             state_ = State::INPUT_GUESS;
             cout << "Please enter your guess:\n";
@@ -54,11 +51,11 @@ void MastermindGame::fsm()
             break;
         }
         cout << ">";
-        cin >> input_guess;
+        cin >> guess;
 
-        if( mastermind_logic_.inputIsValid(input_guess) )
+        if(guessIsValid(guess, valid_colors_, code_length_))
         {
-            BWResult result = mastermind_logic_.evaluateGuess(input_guess, code_);
+            BWresult result = evaluateGuess(guess, code_);
 
             if(result.blacks == code_length_)
             {
@@ -66,8 +63,8 @@ void MastermindGame::fsm()
                 state_ = State::GAME_OVER;
                 break;
             }
-            cout << "Blacks: " << result.blacks << endl;
-            cout << "Whites: " << result.whites << endl;
+            cout << "Blacks: " << result.blacks << "\n";
+            cout << "Whites: " << result.whites << "\n";
             attempts_--;
         }
         else
@@ -75,7 +72,8 @@ void MastermindGame::fsm()
         break;
 
     case State::GAME_OVER:
-        cout << "Game over!!!" << endl;
+        cout << "Game over!!!\n";
+        exit(0);
         break;
 
     }
