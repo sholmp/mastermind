@@ -3,10 +3,12 @@
 
 #include <string>
 
+struct BWresult;
+
 class MastermindPlayer
 {
 public:
-    virtual std::string makeGuess() = 0;
+    virtual std::string makeGuess(const BWresult& previous_result) = 0;
     virtual std::string makeCode() = 0;
 
 private:

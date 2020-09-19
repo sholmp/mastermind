@@ -2,6 +2,10 @@
 #include "inputparser.hpp"
 #include "mastermindgame.hpp"
 
+#include "humanplayer.hpp"
+#include "fiveguessai.hpp"
+
+
 using namespace std;
 
 string help_message = "The default code length is 4, with 6 default colors:'r, g, b, y, p, m'\n\n"
@@ -46,6 +50,12 @@ int main(int argc, char** argv)
     }
 
     MastermindGame game(colors, code_length);
+
+    HumanPlayer p1;
+    HumanPlayer p2;
+    game.setPlayers(&p1, &p2);
+
+
 
     game.run();
 

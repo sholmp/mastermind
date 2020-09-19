@@ -9,32 +9,29 @@
 #include <string>
 #include <vector>
 
-
 class FiveGuessAI : MastermindPlayer
 {
 public:
     FiveGuessAI(const std::string& valid_colors, int code_length);
     FiveGuessAI(MastermindGame* game_ptr);
 
-    std::string makeGuess() override;
+    std::string makeGuess(const BWresult &latest_result) override;
     std::string makeCode() override;
-
 
 private:
     std::string getOptimalGuess();
     int findMaxInBWTable(const std::vector<std::vector<int>>& table);
-    void eraseCombinationsNotMatchingResult(std::list<std::string>& S, const std::string& guess, const BWresult& result);
+    void eraseCombinationsNotMatchingResult(const std::string& guess, const BWresult& result);
 
 private:
     std::list<std::string> S_;
     std::list<std::string> possible_guesses_;
-    std::string first_guess;
+    std::string first_guess_;
+    std::string latest_guess_;
     MastermindGame* game_ptr_;
 
     int code_length_;
     std::string valid_colors_;
-
-
 
 };
 

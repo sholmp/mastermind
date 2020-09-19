@@ -11,7 +11,7 @@ FiveGuessAI::FiveGuessAI(const string &valid_colors, int code_length):
     ComboTree tree(valid_colors, code_length);
     possible_guesses_ = tree.getCombinations();
     S_ = possible_guesses_;
-    first_guess = getOptimalGuess();
+    first_guess_ = getOptimalGuess();
 }
 
 FiveGuessAI::FiveGuessAI(MastermindGame *game_ptr):
@@ -23,7 +23,7 @@ FiveGuessAI::FiveGuessAI(MastermindGame *game_ptr):
     ComboTree tree(valid_colors_, code_length_);
     possible_guesses_ = tree.getCombinations();
     S_ = possible_guesses_;
-    first_guess = getOptimalGuess();
+    first_guess_ = getOptimalGuess();
 }
 
 std::string FiveGuessAI::makeCode()
@@ -35,11 +35,19 @@ std::string FiveGuessAI::makeCode()
     return code;
 }
 
-std::string FiveGuessAI::makeGuess() //BWresult previous_result?
+std::string FiveGuessAI::makeGuess(const BWresult& latest_result)
 {
     string guess;
+    if(latest_result == BWresult(-1,-1))
+        guess = first_guess_;
+    else
+    {
+        eraseCombinationsNotMatchingResult(latest_guess_, latest_result);
+        guess = getOptimalGuess();
+    }
 
-    return getOptimalGuess();
+    latest_guess_ = guess;
+    return guess;
 }
 
 
@@ -81,13 +89,13 @@ int FiveGuessAI::findMaxInBWTable(const std::vector<std::vector<int>>& table)
 }
 
 //guess has been compared to the code, and produced result
-void FiveGuessAI::eraseCombinationsNotMatchingResult(std::list<std::string>& S, const std::string& guess, const BWresult& result)
+void FiveGuessAI::eraseCombinationsNotMatchingResult(const std::string& guess, const BWresult& result)
 {
     static auto comp = [result, guess](string s)
     {
         return evaluateGuess(guess, s) != result;
     };
 
-    S.erase(remove_if(S.begin(), S.end(), comp), S.end());
+    S_.erase(remove_if(S_.begin(), S_.end(), comp), S_.end());
 }
 

@@ -33,7 +33,7 @@ void MastermindGame::fsm()
 
     case State::INPUT_CODE:
         cout << ">";
-        cin >> code_;
+        code_ = code_maker_->makeCode();
 
         if(codeIsValid(code_, valid_colors_, code_length_))
         {
@@ -52,7 +52,7 @@ void MastermindGame::fsm()
             break;
         }
         cout << ">";
-        cin >> guess;
+        guess = code_breaker_->makeGuess(BWresult(-1,-1));
 
         if(guessIsValid(guess, valid_colors_, code_length_))
         {
@@ -72,6 +72,12 @@ void MastermindGame::fsm()
             cout << "Invalid guess, please try again\n";
         break;
     }
+}
+
+void MastermindGame::setPlayers(MastermindPlayer *code_maker, MastermindPlayer *code_breaker)
+{
+    code_maker_ = code_maker;
+    code_breaker_ = code_breaker;
 }
 
 int MastermindGame::getCodeLength()

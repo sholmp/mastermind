@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <ctime>
 #include "fiveguessai.hpp"
+#include "humanplayer.hpp"
 
 void eraseCombinationsNotMatchingResult(std::list<std::string>& S, const std::string& guess, const BWresult& result);
 std::string getOptimalGuess(const std::list<std::string>& S, const std::list<std::string>& combinations, int code_length);
@@ -52,11 +53,16 @@ int main()
 //    debug(S.size());
 
 
-    MastermindGame game(colors, code_length);
-    FiveGuessAI fiveGuesser(&game);
-//    string optimal_guess = fiveGuesser.makeGuess();
+//    MastermindGame game(colors, code_length);
+//    FiveGuessAI fiveGuesser(&game);
 
-//    cout << optimal_guess << endl;
+    HumanPlayer hp;
+    string guess = hp.makeGuess(BWresult(0,0));
+
+    cout << guess << endl;
+
+    code = hp.makeCode();
+    cout << code << endl;
 
     return 0;
 }
