@@ -15,7 +15,7 @@ MastermindGame::MastermindGame(string valid_colors, int code_length):
 
 void MastermindGame::run()
 {
-    while(true)
+    while(state_ != State::GAME_OVER)
     {
         fsm();
     }
@@ -48,6 +48,7 @@ void MastermindGame::fsm()
         if(attempts_ == 0)
         {
             state_ = State::GAME_OVER;
+            cout << "You used all your attempts\n";
             break;
         }
         cout << ">";
@@ -70,12 +71,16 @@ void MastermindGame::fsm()
         else
             cout << "Invalid guess, please try again\n";
         break;
-
-    case State::GAME_OVER:
-        cout << "Game over!!!\n";
-        exit(0);
-        break;
-
     }
+}
+
+int MastermindGame::getCodeLength()
+{
+    return code_length_;
+}
+
+string MastermindGame::getValidColors()
+{
+    return valid_colors_;
 }
 

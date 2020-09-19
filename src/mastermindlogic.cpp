@@ -10,7 +10,6 @@ BWresult evaluateGuess(string input, string code)
 {
     int blacks = 0, whites = 0;
     int n = code.size();
-    int i;
 
     map<char, int> color_counts;
     vector<bool> already_used(n, false);
@@ -18,7 +17,7 @@ BWresult evaluateGuess(string input, string code)
     for(const char& ch: code)
         color_counts[ch] += 1;
 
-    for(i = 0; i < n; i++)
+    for(int i = 0; i < n; i++)
     {
         if(input[i] == code[i])
         {
@@ -28,7 +27,7 @@ BWresult evaluateGuess(string input, string code)
         }
     }
 
-    for(i = 0; i < n; i++)
+    for(int i = 0; i < n; i++)
     {
         char ch = input[i];
         if(color_counts[ch] > 0 && !already_used[i])

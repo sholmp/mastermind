@@ -3,12 +3,16 @@
 
 #include <string>
 #include "mastermindlogic.hpp"
+#include "mastermindplayer.hpp"
 
 class MastermindGame
 {
 public:
     MastermindGame(std::string valid_colors, int code_length);
     void run();
+
+    int getCodeLength();
+    std::string getValidColors();
 
     static const int max_code_length = 8;
     static const int max_colors = 8;
@@ -26,6 +30,9 @@ private:
     int code_length_;
     std::string code_;
     std::string valid_colors_;
+
+    MastermindPlayer* code_maker_;
+    MastermindPlayer* code_breaker_;
 
 };
 
