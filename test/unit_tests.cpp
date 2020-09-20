@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <string>
 
-//#include <mastermind.hpp>
 #include <mastermindgame.hpp>
 #include <mastermindlogic.hpp>
 #include <fiveguessai.hpp>
@@ -48,7 +47,6 @@ TEST(LogicTest, getCombinationsTest)
     getAllPossibleCombinations(combinations, valid_colors, code_length, "");
 
     EXPECT_EQ(combinations.size(), std::pow(valid_colors.length(), code_length)); // e.g. combinations.size() == 1296, for 6 colors, and code_len = 4
-
 }
 
 
