@@ -1,4 +1,5 @@
 #include "simpleai.hpp"
+#include <iostream>
 
 using namespace std;
 
@@ -19,6 +20,8 @@ string SimpleAI::makeGuess(const BWresult &latest_result)
         eraseCombinationsNotMatchingResult(active_set_, latest_guess_, latest_result);
         guess = *active_set_.begin();
     }
+
+    cout << guess << "\n"; //To beautify the console output from statemachine
 
     latest_guess_ = guess;
     return guess;

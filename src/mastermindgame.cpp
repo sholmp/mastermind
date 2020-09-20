@@ -49,7 +49,7 @@ void MastermindGame::statemachine()
         if(attempts_ == 0)
         {
             state_ = State::ROUND_OVER;
-            cout << "You used all your attempts\n";
+            cout << "No more attempts left. The code was " <<  code_ << "\n";
             break;
         }
         cout << ">";
