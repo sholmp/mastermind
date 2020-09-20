@@ -77,13 +77,23 @@ void getAllPossibleCombinations(std::list<string> &combos, const string &colors,
 }
 
 
-void eraseCombinationsNotMatchingResult(std::list<std::string>& combinations, const std::string& guess, const BWresult& result)
+void eraseCombinationsNotMatchingResult(list<string>& combinations, const string& guess, const BWresult& result)
 {
-    auto comp = [guess, result](string s)
+    auto comp = [&guess, &result](const string& s)
     {
         return evaluateGuess(guess, s) != result;
     };
 
     combinations.erase(remove_if(combinations.begin(), combinations.end(), comp), combinations.end());
 }
+
+string makeRandomCode(const string valid_colors, int code_length)
+{
+    string code;
+    for(int i = 0; i < code_length; i++)
+        code += valid_colors[rand() % valid_colors.length()];
+
+    return code;
+}
+
 

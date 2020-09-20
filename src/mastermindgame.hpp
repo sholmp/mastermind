@@ -17,7 +17,9 @@ public:
     std::string getValidColors() const;
 
     static const int max_code_length = 8;
-    static const int max_colors = 8;
+    static const int max_number_of_colors = 8;
+    static const int default_code_length = 4;
+
 
 private:
     void statemachine();
@@ -25,7 +27,7 @@ private:
 private:
     enum class State
     {
-        INIT, INPUT_CODE, INPUT_GUESS, GAME_OVER
+        INIT, INPUT_CODE, INPUT_GUESS, DISPLAY_STATUS, GAME_OVER
     };
     State state_ = State::INIT;
     int attempts_ = 5;

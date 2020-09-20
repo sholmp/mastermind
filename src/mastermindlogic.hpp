@@ -17,6 +17,8 @@ void getAllPossibleCombinations(std::list<std::string>& combos, const std::strin
 void eraseCombinationsNotMatchingResult(std::list<std::string>& combinations,
                                         const std::string& guess, const BWresult& result);
 
+std::string makeRandomCode(const std::string valid_colors, int code_length);
+
 
 struct BWresult
 {

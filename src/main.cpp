@@ -5,6 +5,7 @@
 #include <ctime>
 #include "fiveguessai.hpp"
 #include "humanplayer.hpp"
+#include "simpleai.hpp"
 
 //void eraseCombinationsNotMatchingResult(std::list<std::string>& S, const std::string& guess, const BWresult& result);
 //std::string getOptimalGuess(const std::list<std::string>& S, const std::list<std::string>& combinations, int code_length);
@@ -34,31 +35,50 @@ using namespace std;
 int main()
 {
     srand(time(NULL));
-    string code = "4321";
+    string code = "6543";
     int code_length = 4;
     string colors = "123456";
-
     BWresult latest_result(-1,-1);
 
-    FiveGuessAI fg(colors, code_length);
-    string guess = fg.makeGuess(latest_result);
+//    FiveGuessAI player(colors, code_length);
+    SimpleAI player("SimpleAI", colors, code_length);
+    string guess = player.makeGuess(latest_result);
     cout << guess << endl;
 
     latest_result = evaluateGuess(guess, code);
-    guess = fg.makeGuess(latest_result);
+    guess = player.makeGuess(latest_result);
     cout << guess << endl;
 
     latest_result = evaluateGuess(guess, code);
-    guess = fg.makeGuess(latest_result);
+    guess = player.makeGuess(latest_result);
     cout << guess << endl;
 
     latest_result = evaluateGuess(guess, code);
-    guess = fg.makeGuess(latest_result);
+    guess = player.makeGuess(latest_result);
     cout << guess << endl;
 
     latest_result = evaluateGuess(guess, code);
-    guess = fg.makeGuess(latest_result);
+    guess = player.makeGuess(latest_result);
     cout << guess << endl;
+
+    latest_result = evaluateGuess(guess, code);
+    guess = player.makeGuess(latest_result);
+    cout << guess << endl;
+
+    latest_result = evaluateGuess(guess, code);
+    guess = player.makeGuess(latest_result);
+    cout << guess << endl;
+
+    latest_result = evaluateGuess(guess, code);
+    guess = player.makeGuess(latest_result);
+    cout << guess << endl;
+
+    latest_result = evaluateGuess(guess, code);
+    guess = player.makeGuess(latest_result);
+    cout << guess << endl;
+
+    cout << player.getName() << endl;
+    cout << player.getScore() << endl;
 
     return 0;
 }

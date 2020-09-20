@@ -56,8 +56,8 @@ TEST(PlayerTest, FiveGuessAI)
     int code_length = 4;
     std::string colors = "123456";
 
-    FiveGuessAI fg(colors, code_length);
-    std::string code = fg.makeCode();
+    FiveGuessAI fg("FiveGuessAI", colors, code_length);
+    std::string code = makeRandomCode(colors, code_length);
     BWresult latest_result(-1,-1);
 
     int guess_count = 0;
@@ -73,6 +73,9 @@ TEST(PlayerTest, FiveGuessAI)
     EXPECT_EQ(guess, code);
     EXPECT_LE(guess_count, 5);
 }
+
+
+
 
 
 

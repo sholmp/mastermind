@@ -10,7 +10,6 @@ MastermindGame::MastermindGame(string valid_colors, int code_length):
     valid_colors_(valid_colors),
     code_length_(code_length)
 {
-
 }
 
 void MastermindGame::run()
@@ -27,7 +26,7 @@ void MastermindGame::statemachine()
     switch(state_)
     {
     case State::INIT:
-        cout << "Please enter the secret code:\n";
+        cout << code_maker_->getName() << ", please enter the secret code:\n";
         state_ = State::INPUT_CODE;
         break;
 
@@ -38,7 +37,7 @@ void MastermindGame::statemachine()
         if(codeIsValid(code_, valid_colors_, code_length_))
         {
             state_ = State::INPUT_GUESS;
-            cout << "Please enter your guess:\n";
+            cout << code_breaker_->getName() << ", please enter your guess:\n";
         }
         else
             cout << "Invalid code, please try again\n";

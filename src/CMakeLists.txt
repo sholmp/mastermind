@@ -1,8 +1,10 @@
 set(sources
         mastermindgame.cpp
         mastermindlogic.cpp
+        mastermindplayer.cpp
         humanplayer.cpp
         fiveguessai.cpp
+        simpleai.cpp
     )
 
 set(headers
@@ -11,6 +13,7 @@ set(headers
         mastermindplayer.hpp
         humanplayer.hpp
         fiveguessai.hpp
+        simpleai.hpp
     )
 
 add_library(mastermind STATIC ${sources} ${headers})
@@ -21,7 +24,7 @@ add_library(mastermind STATIC ${sources} ${headers})
 #                                    humanplayer.hpp humanplayer.cpp)
 
 
-add_executable(demo demo.cpp inputparser.hpp)
+add_executable(demo demo.cpp)
 target_link_libraries(demo mastermind)
 
 add_executable(player_testing
