@@ -2,13 +2,21 @@
 #define MASTERMINDLOGIC_HPP
 
 #include <string>
+#include <list>
+
 
 struct BWresult;
 
-BWresult evaluateGuess(std::string input, std::string code);
-
+BWresult evaluateGuess(std::string guess, std::string code);
 bool codeIsValid(std::string code, std::string valid_colors, int code_length);
 bool guessIsValid(std::string guess, std::string valid_colors, int code_length);
+
+void getAllPossibleCombinations(std::list<std::string>& combos, const std::string& colors,
+                                int code_length, std::string current_string);
+
+void eraseCombinationsNotMatchingResult(std::list<std::string>& combinations,
+                                        const std::string& guess, const BWresult& result);
+
 
 struct BWresult
 {

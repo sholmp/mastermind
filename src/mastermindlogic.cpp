@@ -3,10 +3,11 @@
 #include <map>
 #include <iostream>
 #include <unordered_set>
+#include <algorithm>
 
 using namespace std;
 
-BWresult evaluateGuess(string input, string code)
+BWresult evaluateGuess(string guess, string code)
 {
     int blacks = 0, whites = 0;
     int n = code.size();
@@ -19,7 +20,7 @@ BWresult evaluateGuess(string input, string code)
 
     for(int i = 0; i < n; i++)
     {
-        if(input[i] == code[i])
+        if(guess[i] == code[i])
         {
             blacks++;
             already_used[i] = true;
@@ -29,7 +30,7 @@ BWresult evaluateGuess(string input, string code)
 
     for(int i = 0; i < n; i++)
     {
-        char ch = input[i];
+        char ch = guess[i];
         if(color_counts[ch] > 0 && !already_used[i])
         {
             whites++;
@@ -62,3 +63,27 @@ bool guessIsValid(string guess, string valid_colors, int code_length)
 {
     return codeIsValid(guess, valid_colors, code_length);
 }
+
+void getAllPossibleCombinations(std::list<string> &combos, const string &colors, int code_length, string current_string)
+{
+    if(code_length == 0)
+    {
+        combos.push_back(current_string);
+        return;
+    }
+    for(const char& ch: colors)
+        getAllPossibleCombinations(combos, colors, code_length - 1, current_string + ch);
+
+}
+
+
+void eraseCombinationsNotMatchingResult(std::list<std::string>& combinations, const std::string& guess, const BWresult& result)
+{
+    auto comp = [guess, result](string s)
+    {
+        return evaluateGuess(guess, s) != result;
+    };
+
+    combinations.erase(remove_if(combinations.begin(), combinations.end(), comp), combinations.end());
+}
+
