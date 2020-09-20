@@ -1,5 +1,4 @@
 #include <iostream>
-#include "inputparser.hpp"
 #include "mastermindgame.hpp"
 
 #include "humanplayer.hpp"
@@ -57,8 +56,8 @@ int main(int argc, char** argv)
         }
     }
 
-    MastermindPlayer* code_maker;// = new HumanPlayer;
-    MastermindPlayer* code_breaker;// = new HumanPlayer;
+    MastermindPlayer* code_maker;
+    MastermindPlayer* code_breaker;
     if(result.count("play_mode"))
     {
         play_mode = result["play_mode"].as<string>();
