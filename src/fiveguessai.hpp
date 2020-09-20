@@ -4,16 +4,14 @@
 #include "mastermindgame.hpp"
 #include "mastermindlogic.hpp"
 #include "mastermindplayer.hpp"
-//#include "combotree.h"
 #include <list>
 #include <string>
 #include <vector>
 
-class FiveGuessAI : MastermindPlayer
+class FiveGuessAI : public MastermindPlayer
 {
 public:
-    FiveGuessAI(const std::string& valid_colors, int code_length);
-    FiveGuessAI(MastermindGame* game_ptr);
+    FiveGuessAI(const std::string& name, const std::string& valid_colors, int code_length);
 
     std::string makeGuess(const BWresult &latest_result) override;
     std::string makeCode() override;

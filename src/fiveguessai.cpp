@@ -5,34 +5,18 @@
 using namespace std;
 
 
-FiveGuessAI::FiveGuessAI(const string &valid_colors, int code_length):
-    valid_colors_(valid_colors), code_length_(code_length)
+FiveGuessAI::FiveGuessAI(const std::string& name, const string &valid_colors, int code_length):
+   valid_colors_(valid_colors), code_length_(code_length)
 {
+    name_ = name;
     getAllPossibleCombinations(S_, valid_colors_, code_length_, "");
     possible_guesses_ = S_;
-
-    first_guess_ = getOptimalGuess();
-}
-
-FiveGuessAI::FiveGuessAI(MastermindGame *game_ptr):
-    game_ptr_(game_ptr)
-{
-    code_length_ = game_ptr->getCodeLength();
-    valid_colors_ = game_ptr->getValidColors();
-
-    getAllPossibleCombinations(S_, valid_colors_, code_length_, "");
-    possible_guesses_ = S_;
-
     first_guess_ = getOptimalGuess();
 }
 
 std::string FiveGuessAI::makeCode()
 {
-    string code;
-    for(int i = 0; i < code_length_; i++)
-        code += valid_colors_[rand() % valid_colors_.length()];
-
-    return code;
+    return makeRandomCode(valid_colors_, code_length_);
 }
 
 std::string FiveGuessAI::makeGuess(const BWresult& latest_result)
@@ -53,7 +37,7 @@ std::string FiveGuessAI::makeGuess(const BWresult& latest_result)
 
 string FiveGuessAI::getOptimalGuess()
 {
-    if(S_.size() <= 2)
+    if(S_.size() == 1)
         return *S_.begin();
 
     string optimal_guess;

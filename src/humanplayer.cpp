@@ -2,9 +2,9 @@
 #include <iostream>
 
 using namespace std;
-HumanPlayer::HumanPlayer()
+HumanPlayer::HumanPlayer(string name)
 {
-
+    name_ = name;
 }
 
 string HumanPlayer::makeGuess(const BWresult &previous_result)

@@ -1,18 +1,30 @@
 #include "simpleai.hpp"
 
-SimpleAI::SimpleAI(std::string valid_colors, int code_length):
+using namespace std;
+
+SimpleAI::SimpleAI(string name, std::string valid_colors, int code_length):
     valid_colors_(valid_colors), code_length_(code_length)
 {
-    getAllPossibleCombinations(S_, valid_colors_, code_length_, "");
-    possible_guesses_ = S_;
+    name_ = name;
+    getAllPossibleCombinations(active_set_, valid_colors_, code_length_, "");
 }
 
-std::string SimpleAI::makeGuess(const BWresult &previous_result)
+string SimpleAI::makeGuess(const BWresult &latest_result)
 {
-    return "";
+    string guess;
+    if(latest_result == BWresult(-1,-1))
+        guess = *active_set_.begin();
+    else
+    {
+        eraseCombinationsNotMatchingResult(active_set_, latest_guess_, latest_result);
+        guess = *active_set_.begin();
+    }
+
+    latest_guess_ = guess;
+    return guess;
 }
 
-std::string SimpleAI::makeCode()
+string SimpleAI::makeCode()
 {
     return makeRandomCode(valid_colors_, code_length_);
 }
