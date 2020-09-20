@@ -4,7 +4,7 @@
 #include "mastermindgame.hpp"
 #include "mastermindlogic.hpp"
 #include "mastermindplayer.hpp"
-#include "combotree.h"
+//#include "combotree.h"
 #include <list>
 #include <string>
 #include <vector>
@@ -21,7 +21,6 @@ public:
 private:
     std::string getOptimalGuess();
     int findMaxInBWTable(const std::vector<std::vector<int>>& table);
-    void eraseCombinationsNotMatchingResult(const std::string& guess, const BWresult& result);
 
 private:
     std::list<std::string> S_;

@@ -17,11 +17,11 @@ void MastermindGame::run()
 {
     while(state_ != State::GAME_OVER)
     {
-        fsm();
+        statemachine();
     }
 }
 
-void MastermindGame::fsm()
+void MastermindGame::statemachine()
 {
     string guess;
     switch(state_)
@@ -80,12 +80,12 @@ void MastermindGame::setPlayers(MastermindPlayer *code_maker, MastermindPlayer *
     code_breaker_ = code_breaker;
 }
 
-int MastermindGame::getCodeLength()
+int MastermindGame::getCodeLength() const
 {
     return code_length_;
 }
 
-string MastermindGame::getValidColors()
+string MastermindGame::getValidColors() const
 {
     return valid_colors_;
 }

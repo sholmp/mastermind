@@ -2,7 +2,7 @@ set(sources
         mastermindgame.cpp
         mastermindlogic.cpp
         humanplayer.cpp
-#        fiveguessai.cpp
+        fiveguessai.cpp
     )
 
 set(headers
@@ -10,7 +10,7 @@ set(headers
         mastermindlogic.hpp
         mastermindplayer.hpp
         humanplayer.hpp
-#        fiveguessai.hpp
+        fiveguessai.hpp
     )
 
 add_library(mastermind STATIC ${sources} ${headers})
@@ -26,7 +26,6 @@ target_link_libraries(demo mastermind)
 
 add_executable(player_testing
                 main.cpp
-                combotree.h combotree.cpp
                 fiveguessai.hpp fiveguessai.cpp
                 humanplayer.hpp humanplayer.cpp)
 

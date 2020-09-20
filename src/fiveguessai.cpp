@@ -8,9 +8,9 @@ using namespace std;
 FiveGuessAI::FiveGuessAI(const string &valid_colors, int code_length):
     valid_colors_(valid_colors), code_length_(code_length)
 {
-    ComboTree tree(valid_colors, code_length);
-    possible_guesses_ = tree.getCombinations();
-    S_ = possible_guesses_;
+    getAllPossibleCombinations(S_, valid_colors_, code_length_, "");
+    possible_guesses_ = S_;
+
     first_guess_ = getOptimalGuess();
 }
 
@@ -20,9 +20,9 @@ FiveGuessAI::FiveGuessAI(MastermindGame *game_ptr):
     code_length_ = game_ptr->getCodeLength();
     valid_colors_ = game_ptr->getValidColors();
 
-    ComboTree tree(valid_colors_, code_length_);
-    possible_guesses_ = tree.getCombinations();
-    S_ = possible_guesses_;
+    getAllPossibleCombinations(S_, valid_colors_, code_length_, "");
+    possible_guesses_ = S_;
+
     first_guess_ = getOptimalGuess();
 }
 
@@ -42,7 +42,7 @@ std::string FiveGuessAI::makeGuess(const BWresult& latest_result)
         guess = first_guess_;
     else
     {
-        eraseCombinationsNotMatchingResult(latest_guess_, latest_result);
+        eraseCombinationsNotMatchingResult(S_, latest_guess_, latest_result);
         guess = getOptimalGuess();
     }
 
@@ -53,6 +53,9 @@ std::string FiveGuessAI::makeGuess(const BWresult& latest_result)
 
 string FiveGuessAI::getOptimalGuess()
 {
+    if(S_.size() <= 2)
+        return *S_.begin();
+
     string optimal_guess;
     int min_max = 100000; //pow(valid_colors_.length(), code_length_); //1296 for 6 colors and length 4.
 
@@ -86,16 +89,5 @@ int FiveGuessAI::findMaxInBWTable(const std::vector<std::vector<int>>& table)
         max_value = max(row_max, max_value);
     }
     return max_value;
-}
-
-//guess has been compared to the code, and produced result
-void FiveGuessAI::eraseCombinationsNotMatchingResult(const std::string& guess, const BWresult& result)
-{
-    static auto comp = [result, guess](string s)
-    {
-        return evaluateGuess(guess, s) != result;
-    };
-
-    S_.erase(remove_if(S_.begin(), S_.end(), comp), S_.end());
 }
 

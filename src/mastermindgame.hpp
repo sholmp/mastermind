@@ -10,17 +10,17 @@ class MastermindGame
 public:
     MastermindGame(std::string valid_colors, int code_length);
     void run();
+
     void setPlayers(MastermindPlayer* code_maker, MastermindPlayer* code_breaker);
 
-    int getCodeLength();
-    std::string getValidColors();
-
+    int getCodeLength() const;
+    std::string getValidColors() const;
 
     static const int max_code_length = 8;
     static const int max_colors = 8;
 
 private:
-    void fsm();
+    void statemachine();
 
 private:
     enum class State
