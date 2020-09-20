@@ -22,10 +22,11 @@ void MastermindGame::run()
 
 void MastermindGame::statemachine()
 {
-    string guess;
     switch(state_)
     {
     case State::INIT:
+        attempts_ = 5;
+        latest_result_ = BWresult(-1,-1);
         cout << code_maker_->getName() << ", please enter the secret code:\n";
         state_ = State::INPUT_CODE;
         break;
@@ -44,31 +45,51 @@ void MastermindGame::statemachine()
         break;
 
     case State::INPUT_GUESS:
+    {
         if(attempts_ == 0)
         {
-            state_ = State::GAME_OVER;
+            state_ = State::ROUND_OVER;
             cout << "You used all your attempts\n";
             break;
         }
         cout << ">";
-        guess = code_breaker_->makeGuess(BWresult(-1,-1));
+        string guess = code_breaker_->makeGuess(latest_result_);
 
         if(guessIsValid(guess, valid_colors_, code_length_))
         {
-            BWresult result = evaluateGuess(guess, code_);
+            latest_result_ = evaluateGuess(guess, code_);
 
-            if(result.blacks == code_length_)
+            if(latest_result_.blacks == code_length_)
             {
-                cout << "Congratulations you guessed the secret code\n";
-                state_ = State::GAME_OVER;
+                cout << code_breaker_->getName() << " guessed the secret code (" << code_ << ")\n";
+                state_ = State::ROUND_OVER;
                 break;
             }
-            cout << "Blacks: " << result.blacks << "\n";
-            cout << "Whites: " << result.whites << "\n";
+            cout << "Blacks: " << latest_result_.blacks << "\n";
+            cout << "Whites: " << latest_result_.whites << "\n";
+            code_maker_->addToScore(10);
             attempts_--;
         }
         else
             cout << "Invalid guess, please try again\n";
+        break;
+    }
+    default:
+        break;
+    case State::ROUND_OVER:
+        cout << code_maker_->getName() << " has " << code_maker_->getScore() << " points.\n";
+        cout << code_breaker_->getName() << " has " << code_breaker_->getScore() << " points.\n";
+        cout << "Continue [y/n]?\n";
+        string answer;
+        cin >> answer;
+        if(answer == "y")
+        {
+            state_ = State::INIT;
+            swap(code_maker_, code_breaker_);
+        }
+        else
+            state_ = State::GAME_OVER;
+
         break;
     }
 }

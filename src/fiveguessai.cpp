@@ -1,6 +1,7 @@
 #include "fiveguessai.hpp"
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
@@ -29,6 +30,8 @@ std::string FiveGuessAI::makeGuess(const BWresult& latest_result)
         eraseCombinationsNotMatchingResult(S_, latest_guess_, latest_result);
         guess = getOptimalGuess();
     }
+
+    cout << guess << "\n"; //To beautify the console output from statemachine
 
     latest_guess_ = guess;
     return guess;
