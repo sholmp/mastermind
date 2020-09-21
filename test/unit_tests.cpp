@@ -7,7 +7,7 @@
 #include <cmath>
 
 
-TEST(LogicTest, evaluateGuessTest)
+TEST(LogicTest, BasicEvaluateGuessTest)
 {
     EXPECT_EQ(BWresult(4,0), evaluateGuess("RRRR", "RRRR"));
     EXPECT_EQ(BWresult(0,0), evaluateGuess("ABCD", "EFGH"));
@@ -15,6 +15,26 @@ TEST(LogicTest, evaluateGuessTest)
 
     EXPECT_EQ(BWresult(1,0), evaluateGuess("q", "qq"));
     EXPECT_EQ(BWresult(1,0), evaluateGuess("q", "qq"));
+
+}
+
+
+TEST(LogicTest, DiligentEvaluateGuessTest)
+{
+    std::string valid_colors = "123456";
+    int code_length = 4;
+    std::list<std::string> combinataions;
+    getAllPossibleCombinations(combinataions, valid_colors, code_length, "");
+    for(const std::string&  code  : combinataions)
+    {
+        int correct_guesses = 0;
+        for(const std::string& guess : combinataions)
+        {
+            if(evaluateGuess(guess, code) == BWresult(code_length, 0))
+                correct_guesses++;
+        }
+        EXPECT_EQ(correct_guesses, 1); //There should only be 1 correct guess per code.
+    }
 }
 
 TEST(LogicTest, guessIsValidTest)
