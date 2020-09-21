@@ -18,7 +18,6 @@ public:
 
     static const int max_code_length = 8;
     static const int max_number_of_colors = 8;
-//    static const int default_code_length = 4;
 
 
 private:
