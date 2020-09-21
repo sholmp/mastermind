@@ -7,14 +7,18 @@ SimpleAI::SimpleAI(string name, std::string valid_colors, int code_length):
     valid_colors_(valid_colors), code_length_(code_length)
 {
     name_ = name;
-    getAllPossibleCombinations(active_set_, valid_colors_, code_length_, "");
+    getAllPossibleCombinations(possible_guesses_, valid_colors_, code_length_, "");
+    active_set_ = possible_guesses_;
 }
 
 string SimpleAI::makeGuess(const BWresult &latest_result)
 {
     string guess;
     if(latest_result == BWresult(-1,-1))
+    {
         guess = *active_set_.begin();
+        active_set_ = possible_guesses_;
+    }
     else
     {
         eraseCombinationsNotMatchingResult(active_set_, latest_guess_, latest_result);

@@ -21,7 +21,7 @@ private:
     int findMaxInBWTable(const std::vector<std::vector<int>>& table);
 
 private:
-    std::list<std::string> S_;
+    std::list<std::string> active_set_;
     std::list<std::string> possible_guesses_;
     std::string first_guess_;
     std::string latest_guess_;

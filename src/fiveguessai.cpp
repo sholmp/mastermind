@@ -10,8 +10,8 @@ FiveGuessAI::FiveGuessAI(const std::string& name, const string &valid_colors, in
    valid_colors_(valid_colors), code_length_(code_length)
 {
     name_ = name;
-    getAllPossibleCombinations(S_, valid_colors_, code_length_, "");
-    possible_guesses_ = S_;
+    getAllPossibleCombinations(possible_guesses_, valid_colors_, code_length_, "");
+    active_set_ = possible_guesses_;
     first_guess_ = getOptimalGuess();
 }
 
@@ -24,10 +24,13 @@ std::string FiveGuessAI::makeGuess(const BWresult& latest_result)
 {
     string guess;
     if(latest_result == BWresult(-1,-1))
+    {
+        active_set_ = possible_guesses_;
         guess = first_guess_;
+    }
     else
     {
-        eraseCombinationsNotMatchingResult(S_, latest_guess_, latest_result);
+        eraseCombinationsNotMatchingResult(active_set_, latest_guess_, latest_result);
         guess = getOptimalGuess();
     }
 
@@ -40,8 +43,8 @@ std::string FiveGuessAI::makeGuess(const BWresult& latest_result)
 
 string FiveGuessAI::getOptimalGuess()
 {
-    if(S_.size() == 1)
-        return *S_.begin();
+    if(active_set_.size() == 1)
+        return *active_set_.begin();
 
     string optimal_guess;
     int min_max = 100000; //pow(valid_colors_.length(), code_length_); //1296 for 6 colors and length 4.
@@ -50,7 +53,7 @@ string FiveGuessAI::getOptimalGuess()
     {
         vector<vector<int>> bw_table(code_length_ + 1, vector<int>(code_length_ + 1)); //add 1 because of zero indexing,
                                                                                        //and whole range[0-code_len] is needed
-        for(const string& s : S_)
+        for(const string& s : active_set_)
         {
             BWresult result = evaluateGuess(g, s);
             bw_table[result.blacks][result.whites] += 1;

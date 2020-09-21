@@ -14,6 +14,7 @@ public:
 
 private:
     std::list<std::string> active_set_;
+    std::list<std::string> possible_guesses_;
     std::string first_guess_;
     std::string latest_guess_;
 
