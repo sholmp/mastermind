@@ -11,6 +11,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+    srand(time(NULL));
     string default_play_mode = "HvH";
     string default_colors = "123456";
     int default_code_length = 4;
