@@ -1,6 +1,7 @@
 # Mastermind
-C++ implementation based on the [Mastermind wiki](https://en.wikipedia.org/wiki/Mastermind_(board_game))
+C++ implementation based on the [Mastermind wiki](https://en.wikipedia.org/wiki/Mastermind_(board_game)). 
 ![](terminal_screen_shot.png)
+![](terminal_Hv5.png)
 ## Build instructions
 ```bash
 mkdir build && cd build
