@@ -11,6 +11,7 @@ public:
 
     std::string makeGuess(const BWresult& previous_result) override;
     std::string makeCode() override;
+
 };
 
 #endif // HUMANPLAYER_HPP

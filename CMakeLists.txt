@@ -3,6 +3,10 @@ project(Mastermind LANGUAGES CXX)
 
 enable_testing()
 
-add_subdirectory(googletest)
 add_subdirectory(src)
-add_subdirectory(test)
+
+find_package(GTest)
+
+if(${GTest_FOUND})
+    add_subdirectory(test)
+endif()

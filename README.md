@@ -7,6 +7,10 @@ mkdir build && cd build
 cmake ..
 make
 ```
+### Dependencies
+[GTest](https://github.com/google/googletest)
+
+
 ## Program structure
  The game runs as a simple state machine with four states, as seen in the following diagram
  ![](statemachine.png)
