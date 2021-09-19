@@ -8,7 +8,7 @@ cmake ..
 make
 ```
 ### Dependencies
-[GTest](https://github.com/google/googletest)
+If you want to run the test you'll need [GTest](https://github.com/google/googletest)
 
 
 ## Program structure
